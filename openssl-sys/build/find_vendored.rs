@@ -1,4 +1,7 @@
-use openssl_src;
+#[cfg(feature = "vendored-111")]
+use openssl_src_111 as openssl_src;
+#[cfg(feature = "vendored-300")]
+use openssl_src_300 as openssl_src;
 use std::path::PathBuf;
 
 pub fn get_openssl(_target: &str) -> (Vec<PathBuf>, PathBuf) {

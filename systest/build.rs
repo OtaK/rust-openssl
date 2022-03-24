@@ -120,7 +120,9 @@ fn main() {
             s == "SSL_get_ex_new_index" ||
             s == "SSL_CTX_get_ex_new_index" ||
             s == "CRYPTO_get_ex_new_index"
-        })
+        }) ||
+
+        (target == "wasm32-wasi" && s.starts_with("BIO_new_socket"))
     });
     cfg.skip_field_type(|s, field| {
         (s == "EVP_PKEY" && field == "pkey") ||      // union

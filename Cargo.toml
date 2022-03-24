@@ -7,5 +7,11 @@ members = [
     "systest",
 ]
 
-[patch.crates-io]
-bindgen = { git = "https://github.com/daviddrysdale/rust-bindgen", branch = "allowlist-file" }
+[patch.crates-io.bindgen]
+git = "https://github.com/daviddrysdale/rust-bindgen"
+branch = "allowlist-file"
+
+[patch.crates-io.openssl-src]
+path = "../openssl-src-rs"
+# git = "https://github.com/otak/openssl-src-rs"
+# branch = "otak/wasi-compat"

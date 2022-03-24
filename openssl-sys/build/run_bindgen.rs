@@ -81,6 +81,21 @@ pub fn run(include_dirs: &[PathBuf]) {
         .layout_tests(false)
         .header_contents("includes.h", INCLUDES);
 
+    if cfg!(target_family = "wasm") {
+        builder = builder
+            .blocklist_function("BIO_new_socket")
+            .blocklist_type("OSSL_FUNC_BIO_new_socket_fn")
+            .blocklist_function("getuid");
+
+        if cfg!(target = "wasm32-wasi") {
+            builder = builder
+                .clang_arg("-lwasi-emulated-signal")
+                .clang_arg("-lwasi-emulated-process-clocks")
+                .clang_arg("-lwasi-emulated-mman")
+                .clang_arg("-lwasi-emulated-getpid");
+        }
+    }
+
     for include_dir in include_dirs {
         builder = builder
             .clang_arg("-I")

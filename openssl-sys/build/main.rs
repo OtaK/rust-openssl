@@ -4,8 +4,10 @@ extern crate autocfg;
 #[cfg(feature = "bindgen")]
 extern crate bindgen;
 extern crate cc;
-#[cfg(feature = "vendored")]
-extern crate openssl_src;
+#[cfg(feature = "vendored-111")]
+extern crate openssl_src_111;
+#[cfg(feature = "vendored-300")]
+extern crate openssl_src_300;
 extern crate pkg_config;
 #[cfg(target_env = "msvc")]
 extern crate vcpkg;
@@ -17,7 +19,7 @@ use std::path::{Path, PathBuf};
 mod cfgs;
 
 mod find_normal;
-#[cfg(feature = "vendored")]
+#[cfg(any(feature = "vendored-111", feature = "vendored-300"))]
 mod find_vendored;
 #[cfg(feature = "bindgen")]
 mod run_bindgen;
@@ -49,7 +51,7 @@ fn env(name: &str) -> Option<OsString> {
 }
 
 fn find_openssl(target: &str) -> (Vec<PathBuf>, PathBuf) {
-    #[cfg(feature = "vendored")]
+    #[cfg(any(feature = "vendored-111", feature = "vendored-300"))]
     {
         // vendor if the feature is present, unless
         // OPENSSL_NO_VENDOR exists and isn't `0`
@@ -126,6 +128,13 @@ fn main() {
         println!("cargo:rustc-link-lib=dylib=crypt32");
         println!("cargo:rustc-link-lib=dylib=ws2_32");
         println!("cargo:rustc-link-lib=dylib=advapi32");
+    }
+
+    if target == "wasm32-wasi" {
+        println!("cargo:rustc-link-lib=wasi-emulated-signal");
+        println!("cargo:rustc-link-lib=wasi-emulated-process-clocks");
+        println!("cargo:rustc-link-lib=wasi-emulated-mman");
+        println!("cargo:rustc-link-lib=wasi-emulated-getpid");
     }
 }
 
