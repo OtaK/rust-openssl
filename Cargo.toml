@@ -11,7 +11,16 @@ members = [
 git = "https://github.com/daviddrysdale/rust-bindgen"
 branch = "allowlist-file"
 
-[patch.crates-io.openssl-src]
-path = "../openssl-src-rs"
-# git = "https://github.com/otak/openssl-src-rs"
-# branch = "otak/wasi-compat"
+[patch.crates-io.openssl-src-111]
+# path = "../openssl-src-rs"
+package = "openssl-src"
+version = "111"
+git = "https://github.com/otak/openssl-src-rs"
+branch = "otak/wasi-fix-111"
+
+[patch.crates-io.openssl-src-300]
+# path = "../openssl-src-rs"
+package = "openssl-src"
+version = "300"
+git = "https://github.com/otak/openssl-src-rs"
+branch = "otak/wasi-fix-300"

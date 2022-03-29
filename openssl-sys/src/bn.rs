@@ -2,10 +2,14 @@ use libc::*;
 
 use *;
 
-#[cfg(target_pointer_width = "64")]
-pub type BN_ULONG = c_ulonglong;
-#[cfg(target_pointer_width = "32")]
+#[cfg(all(not(wasi), target_pointer_width = "64"))]
 pub type BN_ULONG = c_uint;
+#[cfg(all(not(wasi), target_pointer_width = "32"))]
+pub type BN_ULONG = c_ulonglong;
+#[cfg(all(ossl300, wasi))]
+pub type BN_ULONG = c_uint;
+#[cfg(all(not(ossl300), wasi))]
+pub type BN_ULONG = c_ulonglong;
 
 #[cfg(ossl110)]
 pub const BN_FLG_MALLOCED: c_int = 0x01;

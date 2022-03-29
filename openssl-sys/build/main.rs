@@ -135,6 +135,7 @@ fn main() {
         println!("cargo:rustc-link-lib=wasi-emulated-process-clocks");
         println!("cargo:rustc-link-lib=wasi-emulated-mman");
         println!("cargo:rustc-link-lib=wasi-emulated-getpid");
+        println!("cargo:rustc-cfg=wasi");
     }
 }
 

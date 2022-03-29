@@ -13,6 +13,31 @@ extern "C" {
     pub fn CRYPTO_set_id_callback(func: unsafe extern "C" fn() -> c_ulong);
 }
 
+// WASI compatibility patch to stub getuid() variants
+#[cfg(wasi)]
+#[no_mangle]
+pub extern "C" fn getuid() -> c_int {
+    1000
+}
+
+#[cfg(wasi)]
+#[no_mangle]
+pub extern "C" fn geteuid() -> c_int {
+    1001
+}
+
+#[cfg(wasi)]
+#[no_mangle]
+pub extern "C" fn getgid() -> c_int {
+    1000
+}
+
+#[cfg(wasi)]
+#[no_mangle]
+pub extern "C" fn getegid() -> c_int {
+    1001
+}
+
 cfg_if! {
     if #[cfg(ossl110)] {
         type CRYPTO_EX_new_ret = ();

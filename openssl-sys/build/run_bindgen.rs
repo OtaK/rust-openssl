@@ -85,7 +85,7 @@ pub fn run(include_dirs: &[PathBuf]) {
         builder = builder
             .blocklist_function("BIO_new_socket")
             .blocklist_type("OSSL_FUNC_BIO_new_socket_fn")
-            .blocklist_function("getuid");
+            .blocklist_function("OPENSSL_issetugid");
 
         if cfg!(target = "wasm32-wasi") {
             builder = builder
