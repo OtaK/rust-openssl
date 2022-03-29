@@ -1368,6 +1368,7 @@ mod tests {
         assert!(result >= BigNum::from_u32(0).unwrap() && result < range);
     }
 
+    #[cfg(not(wasi))]
     #[test]
     fn test_prime_numbers() {
         let a = BigNum::from_u32(19_029_017).unwrap();
