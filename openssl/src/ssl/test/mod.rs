@@ -945,7 +945,7 @@ fn idle_session() {
 }
 
 #[test]
-#[cfg_attr(libressl321, ignore)]
+#[cfg_attr(any(libressl321, wasi), ignore)]
 fn active_session() {
     let server = Server::builder().build();
 

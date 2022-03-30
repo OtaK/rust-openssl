@@ -82,4 +82,8 @@ fn main() {
             println!("cargo:rustc-cfg=libressl340");
         }
     }
+
+    if env::var("TARGET").unwrap().contains("wasi") {
+        println!("cargo:rustc-cfg=wasi");
+    }
 }

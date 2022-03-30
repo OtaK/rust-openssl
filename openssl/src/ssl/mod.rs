@@ -111,7 +111,7 @@ mod bio;
 mod callbacks;
 mod connector;
 mod error;
-#[cfg(test)]
+#[cfg(all(test, not(wasi)))]
 mod test;
 
 /// Returns the OpenSSL name of a cipher corresponding to an RFC-standard cipher name.

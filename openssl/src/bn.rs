@@ -440,6 +440,54 @@ impl BigNumRef {
         }
     }
 
+    /// Generates a prime number, placing it in `self`, using `ctx` to seed the PRNG.
+    ///
+    /// # Parameters
+    ///
+    /// * `bits`: The length of the prime in bits (lower bound).
+    /// * `safe`: If true, returns a "safe" prime `p` so that `(p-1)/2` is also prime.
+    /// * `add`/`rem`: If `add` is set to `Some(add)`, `p % add == rem` will hold, where `p` is the
+    ///   generated prime and `rem` is `1` if not specified (`None`).
+    /// * `ctx`: BigNumberRef context
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use openssl::bn::BigNum;
+    /// use openssl::error::ErrorStack;
+    ///
+    /// fn generate_weak_prime() -> Result< BigNum, ErrorStack > {
+    ///    let mut big = BigNum::new()?;
+    ///
+    ///    // Generates a 128-bit simple prime number
+    ///    big.generate_prime(128, false, None, None);
+    ///    Ok((big))
+    /// }
+    /// ```
+    #[cfg(ossl300)]
+    #[corresponds(BN_generate_prime_ex2)]
+    pub fn generate_prime2(
+        &mut self,
+        bits: i32,
+        safe: bool,
+        add: Option<&BigNumRef>,
+        rem: Option<&BigNumRef>,
+        ctx: &mut BigNumContextRef,
+    ) -> Result<(), ErrorStack> {
+        unsafe {
+            cvt(ffi::BN_generate_prime_ex2(
+                self.as_ptr(),
+                bits as c_int,
+                safe as c_int,
+                add.map(|n| n.as_ptr()).unwrap_or(ptr::null_mut()),
+                rem.map(|n| n.as_ptr()).unwrap_or(ptr::null_mut()),
+                ptr::null_mut(),
+                ctx.as_ptr(),
+            ))
+            .map(|_| ())
+        }
+    }
+
     /// Places the result of `a * b` in `self`.
     /// [`core::ops::Mul`] is also implemented for `BigNumRef`.
     ///
@@ -1368,10 +1416,10 @@ mod tests {
         assert!(result >= BigNum::from_u32(0).unwrap() && result < range);
     }
 
-    #[cfg(not(wasi))]
     #[test]
     fn test_prime_numbers() {
         let a = BigNum::from_u32(19_029_017).unwrap();
+
         let mut p = BigNum::new().unwrap();
         p.generate_prime(128, true, None, Some(&a)).unwrap();
 

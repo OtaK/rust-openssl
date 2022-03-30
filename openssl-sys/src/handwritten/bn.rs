@@ -122,6 +122,16 @@ extern "C" {
         rem: *const BIGNUM,
         cb: *mut BN_GENCB,
     ) -> c_int;
+    #[cfg(ossl300)]
+    pub fn BN_generate_prime_ex2(
+        r: *mut BIGNUM,
+        bits: c_int,
+        safe: c_int,
+        add: *const BIGNUM,
+        rem: *const BIGNUM,
+        cb: *mut BN_GENCB,
+        ctx: *mut BN_CTX,
+    ) -> c_int;
     pub fn BN_is_prime_ex(
         p: *const BIGNUM,
         checks: c_int,
