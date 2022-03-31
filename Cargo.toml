@@ -14,13 +14,13 @@ branch = "allowlist-file"
 [patch.crates-io.openssl-src-111]
 # path = "../openssl-src-rs"
 package = "openssl-src"
-version = "111"
+version = "=111.19.0"
 git = "https://github.com/otak/openssl-src-rs"
 branch = "otak/wasi-fix-111"
 
 [patch.crates-io.openssl-src-300]
 # path = "../openssl-src-rs"
 package = "openssl-src"
-version = "300"
+version = "=300.0.6"
 git = "https://github.com/otak/openssl-src-rs"
 branch = "otak/wasi-fix-300"
